@@ -20,8 +20,7 @@
                 throw new ArgumentOutOfRangeException($"{nameof(size)} cannot be less than zero.");
             }
 
-            array = new T[size, size];
-
+            this.array = new T[size, size];
         }
 
         #endregion
@@ -31,13 +30,13 @@
         /// <inheritdoc />
         protected override T GetElement(int i, int j)
         {
-            return array[i, j];
+            return this.array[i, j];
         }
 
         /// <inheritdoc />
         protected override void SetElement(int i, int j, T value)
         {
-            array[i, j] = value;
+            this.array[i, j] = value;
         }
 
         #endregion

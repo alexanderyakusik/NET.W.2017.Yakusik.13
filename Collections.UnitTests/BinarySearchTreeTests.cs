@@ -103,7 +103,8 @@
                 get
                 {
                     yield return new TestCaseData(
-                        new BinarySearchTree<Point>(new[] { new Point(100, 23), new Point(100, -64), new Point(99, 33) },
+                        new BinarySearchTree<Point>(
+                            new[] { new Point(100, 23), new Point(100, -64), new Point(99, 33) },
                             Comparer<Point>.Create((lhs, rhs) => lhs.X - rhs.X == 0 ? lhs.Y - rhs.Y : lhs.X - rhs.X)),
                         new[] { new Point(99, 33), new Point(100, -64), new Point(100, 23) });
                 }

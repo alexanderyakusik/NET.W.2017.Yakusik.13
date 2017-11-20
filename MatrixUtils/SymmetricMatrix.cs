@@ -13,11 +13,11 @@
         /// <inheritdoc />
         public SymmetricMatrix(int size) : base(size)
         {
-            array = new T[size][];
+            this.array = new T[size][];
 
             for (int i = 0; i < size; i++)
             {
-                array[i] = new T[i + 1];
+                this.array[i] = new T[i + 1];
             }
         }
 
@@ -28,7 +28,7 @@
         /// <inheritdoc />
         protected override T GetElement(int i, int j)
         {
-            return i < j ? array[j][i] : array[i][j];
+            return i < j ? this.array[j][i] : this.array[i][j];
         }
 
         /// <inheritdoc />
@@ -36,11 +36,11 @@
         {
             if (i < j)
             {
-                array[j][i] = value;
+                this.array[j][i] = value;
                 return;
             }
 
-            array[i][j] = value;
+            this.array[i][j] = value;
         }
 
         #endregion

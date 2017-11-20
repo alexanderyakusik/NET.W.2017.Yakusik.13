@@ -15,7 +15,7 @@
         /// <inheritdoc />
         public DiagonalMatrix(int size) : base(size)
         {
-            array = new T[size];
+            this.array = new T[size];
         }
 
         #endregion
@@ -25,7 +25,7 @@
         /// <inheritdoc />
         protected override T GetElement(int i, int j)
         {
-            return i != j ? default(T) : array[i];
+            return i != j ? default(T) : this.array[i];
         }
 
         /// <inheritdoc />
@@ -37,7 +37,7 @@
                 throw new ArgumentOutOfRangeException($"Cannot set elements that are not on main diagonal.");
             }
 
-            array[i] = value;
+            this.array[i] = value;
         }
 
         #endregion

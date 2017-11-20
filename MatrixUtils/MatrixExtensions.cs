@@ -30,9 +30,9 @@
             this DiagonalMatrix<T> matrix,
             DiagonalMatrix<T> otherMatrix)
         {
-            return matrix.Transform(otherMatrix,
-                ((firstMatrixElement, secondMatrixElement) =>
-                    (dynamic) firstMatrixElement + (dynamic) secondMatrixElement));
+            return matrix.Transform(
+                otherMatrix,
+                (firstMatrixElement, secondMatrixElement) => (dynamic)firstMatrixElement + (dynamic)secondMatrixElement);
         }
 
         #endregion

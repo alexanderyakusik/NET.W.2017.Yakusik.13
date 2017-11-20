@@ -16,6 +16,15 @@
             Size = size > 0 ? size : throw new ArgumentOutOfRangeException($"{nameof(size)} must be greater than or equal to zero.");
         }
 
+        #endregion        
+
+        #region Events
+
+        /// <summary>
+        /// Event that is called when the element in the matrix is changed.
+        /// </summary>
+        public event EventHandler<ElementChangeEventArgs> ElementChange;
+
         #endregion
 
         #region Properties
@@ -54,15 +63,6 @@
                 OnElementChange(this, new ElementChangeEventArgs(i, j));
             }
         }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// Event that is called when the element in the matrix is changed.
-        /// </summary>
-        public event EventHandler<ElementChangeEventArgs> ElementChange;
 
         #endregion
 
