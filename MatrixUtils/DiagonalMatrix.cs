@@ -2,42 +2,42 @@
 {
     using System;
 
-    public class DiagonalMatrix<T> : SquareMatrix<T>
+    public class DiagonalMatrix<T> : SquareMatrixPrototype<T>
     {
+        #region Private fields
+
+        private T[] array;
+
+        #endregion
+
         #region Ctors
 
-        /// <summary>
         /// <inheritdoc />
-        /// </summary>
-        /// <param name="size"></param>
         public DiagonalMatrix(int size) : base(size)
         {
+            array = new T[size];
         }
 
         #endregion
 
-        #region Indexers
+        #region Protected methods
 
-        /// <summary>
         /// <inheritdoc />
-        /// </summary>
-        /// <exception cref="InvalidOperationException"><paramref name="i"/> is not equal to <paramref name="j"/>.</exception>
-        public override T this[int i, int j]
+        protected override T GetElement(int i, int j)
         {
-            get
+            return i != j ? default(T) : array[i];
+        }
+
+        /// <inheritdoc />
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="i"/> is not equal to <paramref name="j"/>.</exception>
+        protected override void SetElement(int i, int j, T value)
+        {
+            if (i != j)
             {
-                return base[i, j];
+                throw new ArgumentOutOfRangeException($"Cannot set elements that are not on main diagonal.");
             }
 
-            set
-            {
-                if (i != j)
-                {
-                    throw new InvalidOperationException($"Cannot set elements that are not on the main diagonal.");
-                }
-
-                base[i, j] = value;
-            }
+            array[i] = value;
         }
 
         #endregion

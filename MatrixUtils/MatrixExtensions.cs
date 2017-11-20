@@ -9,51 +9,79 @@
         /// <summary>
         /// Performs an addition operation on <paramref name="matrix"/> and <paramref name="otherMatrix"/>.
         /// </summary>
-        /// <typeparam name="T">Matrix element type.</typeparam>
+        /// <typeparam name="T">Matrix type.</typeparam>
+        /// <typeparam name="TMatrixElementType">Matrix element type.</typeparam>
         /// <param name="matrix">First matrix.</param>
         /// <param name="otherMatrix">Second matrix.</param>
-        /// <returns>New SquareMatrix with added elements.</returns>
+        /// <returns>New matrix with added elements.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="matrix"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="otherMatrix"/> is null.</exception>
         /// <exception cref="ArgumentException">Sizes of two matrixes are not equal.</exception>
-        public static SquareMatrix<T> Add<T>(
-            this SquareMatrix<T> matrix,
-            SquareMatrix<T> otherMatrix)
+        public static T Add<T, TMatrixElementType>(
+            this T matrix,
+            T otherMatrix) where T : SquareMatrixPrototype<TMatrixElementType>
         {
-            return matrix.Transform(
+            return matrix.Transform<T, TMatrixElementType>(
                 otherMatrix,
                 (firstMatrixElement, secondMatrixElement) => (dynamic)firstMatrixElement + (dynamic)secondMatrixElement);
+        }
+
+        public static DiagonalMatrix<T> Add<T>(
+            this DiagonalMatrix<T> matrix,
+            DiagonalMatrix<T> otherMatrix)
+        {
+            return matrix.Transform(otherMatrix,
+                ((firstMatrixElement, secondMatrixElement) =>
+                    (dynamic) firstMatrixElement + (dynamic) secondMatrixElement));
         }
 
         #endregion
 
         #region Private methods
 
-        private static SquareMatrix<T> Transform<T>(
-            this SquareMatrix<T> matrix,
-            SquareMatrix<T> otherMatrix,
-            Func<T, T, T> addFunc)
+        private static T Transform<T, TMatrixType>(
+            this T matrix,
+            T otherMatrix,
+            Func<TMatrixType, TMatrixType, TMatrixType> transformFunc) where T : SquareMatrixPrototype<TMatrixType>
         {
-            ValidateNullParameters(matrix, otherMatrix, addFunc);
+            ValidateNullParameters(matrix, otherMatrix, transformFunc);
             ValidateMatrixSizes(matrix, otherMatrix);
 
-            var resultMatrix = new SquareMatrix<T>(matrix.Size);
+            var resultMatrix = (T)Activator.CreateInstance(typeof(T), matrix.Size);
 
             for (int i = 0; i < resultMatrix.Size; i++)
             {
                 for (int j = 0; j < resultMatrix.Size; j++)
                 {
-                    resultMatrix[i, j] = addFunc(matrix[i, j], otherMatrix[i, j]);
+                    resultMatrix[i, j] = transformFunc(matrix[i, j], otherMatrix[i, j]);
                 }
             }
 
             return resultMatrix;
         }
 
+        private static DiagonalMatrix<T> Transform<T>(
+            this DiagonalMatrix<T> matrix,
+            DiagonalMatrix<T> otherMatrix,
+            Func<T, T, T> transformFunc)
+        {
+            ValidateNullParameters(matrix, otherMatrix, transformFunc);
+            ValidateMatrixSizes(matrix, otherMatrix);
+
+            var resultMatrix = new DiagonalMatrix<T>(matrix.Size);
+
+            for (int i = 0; i < resultMatrix.Size; i++)
+            {
+                resultMatrix[i, i] = transformFunc(matrix[i, i], otherMatrix[i, i]);
+            }
+
+            return resultMatrix;
+        }
+
         private static void ValidateNullParameters<T>(
-            SquareMatrix<T> matrix,
-            SquareMatrix<T> otherMatrix,
-            Func<T, T, T> addFunc)
+            SquareMatrixPrototype<T> matrix,
+            SquareMatrixPrototype<T> otherMatrix,
+            Func<T, T, T> transformFunc)
         {
             if (matrix == null)
             {
@@ -65,13 +93,13 @@
                 throw new ArgumentNullException($"{nameof(otherMatrix)} cannot be null.");
             }
 
-            if (addFunc == null)
+            if (transformFunc == null)
             {
-                throw new ArgumentNullException($"{nameof(addFunc)} cannot be null.");
+                throw new ArgumentNullException($"{nameof(transformFunc)} cannot be null.");
             }
         }
 
-        private static void ValidateMatrixSizes<T>(SquareMatrix<T> matrix, SquareMatrix<T> otherMatrix)
+        private static void ValidateMatrixSizes<T>(SquareMatrixPrototype<T> matrix, SquareMatrixPrototype<T> otherMatrix)
         {
             if (matrix.Size != otherMatrix.Size)
             {

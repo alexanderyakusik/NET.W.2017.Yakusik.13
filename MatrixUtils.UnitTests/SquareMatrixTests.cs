@@ -49,19 +49,19 @@
                 return;
             }
 
-            Assert.Throws<InvalidOperationException>(() => matrix[i, j] = element);
+            Assert.Throws<ArgumentOutOfRangeException>(() => matrix[i, j] = element);
         }
 
         [Test]
         public void Add_NullMatrixPassed_ArgumentNullExceptionThrown()
         {
-            Assert.Throws<ArgumentNullException>(() => new SquareMatrix<int>(1).Add(null));
+            Assert.Throws<ArgumentNullException>(() => new SquareMatrix<int>(1).Add<SquareMatrix<int>, int>(null));
         }
 
         [Test]
         public void Add_MatrixesWithDifferentSizesPassed_ArgumentExceptionThorwn()
         {
-            Assert.Throws<ArgumentException>(() => new SquareMatrix<int>(3).Add(new SquareMatrix<int>(2)));
+            Assert.Throws<ArgumentException>(() => new SquareMatrix<int>(3).Add<SquareMatrix<int>, int>(new SquareMatrix<int>(2)));
         }
 
         [Test]
