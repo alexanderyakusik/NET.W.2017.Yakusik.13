@@ -92,9 +92,6 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <project key="-422771992">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
   <sourcecode name="BinarySearchTreeTests.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2017.11.12 12:15:55.358</styleCop>
@@ -118,4 +115,7 @@
     </timestamps>
     <violations />
   </sourcecode>
+  <project key="-422771992">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
 </stylecopresultscache>

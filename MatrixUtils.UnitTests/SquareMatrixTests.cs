@@ -49,19 +49,19 @@
                 return;
             }
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => matrix[i, j] = element);
+            Assert.Throws<InvalidOperationException>(() => matrix[i, j] = element);
         }
 
         [Test]
         public void Add_NullMatrixPassed_ArgumentNullExceptionThrown()
         {
-            Assert.Throws<ArgumentNullException>(() => new SquareMatrix<int>(1).Add<SquareMatrix<int>, int>(null));
+            Assert.Throws<ArgumentNullException>(() => new SquareMatrix<int>(1).Add(null));
         }
 
         [Test]
         public void Add_MatrixesWithDifferentSizesPassed_ArgumentExceptionThorwn()
         {
-            Assert.Throws<ArgumentException>(() => new SquareMatrix<int>(3).Add<SquareMatrix<int>, int>(new SquareMatrix<int>(2)));
+            Assert.Throws<ArgumentException>(() => new SquareMatrix<int>(3).Add(new SquareMatrix<int>(2)));
         }
 
         [Test]
@@ -83,6 +83,36 @@
 
             Assert.AreEqual(result[0, 0], actual[0, 0]);
             Assert.AreEqual(result[1, 1], actual[1, 1]);
+        }
+
+        [Test]
+        public void Add_SymmetricalAndDiagonalMatrixes_WorksCorrectly()
+        {
+            var lhs = new DiagonalMatrix<int>(2);
+            lhs[0, 0] = 1;
+            lhs[1, 1] = 2;
+
+            var rhs = new SymmetricMatrix<int>(2);
+            rhs[0, 0] = -100;
+            rhs[0, 1] = 1;
+            rhs[1, 0] = 22;
+            rhs[1, 1] = 50;
+
+            var result = new SymmetricMatrix<int>(2);
+            result[0, 0] = -99;
+            result[0, 1] = 1;
+            result[1, 0] = 22;
+            result[1, 1] = 52;
+
+            var actual = lhs.Add(rhs);
+
+            for (int i = 0; i < result.Size; i++)
+            {
+                for (int j = 0; j < result.Size; j++)
+                {
+                    Assert.AreEqual(result[i, j], actual[i, j]);
+                }
+            }
         }
     }
 }

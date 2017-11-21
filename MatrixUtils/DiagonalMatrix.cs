@@ -34,7 +34,7 @@
         {
             if (i != j)
             {
-                throw new ArgumentOutOfRangeException($"Cannot set elements that are not on main diagonal.");
+                throw new InvalidOperationException($"Cannot set elements that are not on main diagonal.");
             }
 
             this.array[i] = value;
